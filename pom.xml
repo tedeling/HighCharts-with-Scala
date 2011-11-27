@@ -143,8 +143,11 @@
     </repositories>
 
     <scm>
-        <connection>scm:svn:https://svn.te-con.nl/repos/scalahighcharts</connection>
+        <connection>scm:git:git@github.com:tedeling/HighCharts-with-Scala.git</connection>
+        <url>scm:git:git@github.com:tedeling/HighCharts-with-Scala.git</url>
+        <developerConnection>scm:git:git@github.com:tedeling/HighCharts-with-Scala.git</developerConnection>
     </scm>
+
 
     <distributionManagement>
         <repository>
