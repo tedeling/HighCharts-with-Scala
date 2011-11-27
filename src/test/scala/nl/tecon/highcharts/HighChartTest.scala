@@ -12,7 +12,7 @@ import org.joda.time.DateTime
 
 @RunWith(classOf[JUnitRunner])
 class HighChartTest extends FlatSpec with ShouldMatchers with BeforeAndAfter {
-  val chart = new Chart(defaultSeriesType = SeriesType.Columnm);
+  val chart = new Chart(defaultSeriesType = SeriesType.Column)
   val title = new Title(text = "chart")
 
   val xAxis = new Axis(categories = Array("jan", "feb"))
@@ -29,7 +29,7 @@ class HighChartTest extends FlatSpec with ShouldMatchers with BeforeAndAfter {
 
   "HighCharts" should " generate" in {
     val serializedConfig = highChart.build("container")
-
+    print (serializedConfig)
     serializedConfig should equal("""chart:{"renderTo":"container","defaultSeriesType":"column"},title:{"text":"chart"},xAxis:{"categories":["jan","feb"]},credits:{"enabled":false},tooltip:{"shared":true},yAxis:{"title":{"text":"load"}},series:[]""")
   }
 

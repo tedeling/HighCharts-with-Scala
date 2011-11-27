@@ -1,0 +1,28 @@
+Simple Scala generator of HighCharts' config in Javascript
+
+Usage:
+
+  val chart = new Chart(defaultSeriesType = SeriesType.Column)
+  val title = new Title(text = "chart")
+
+  val xAxis = new Axis(categories = Array("jan", "feb"))
+  val yAxis = new Axis(title = new Title(text = "load"))
+
+  var highChart: HighChart = _
+
+  before {
+    highChart = new HighChart(chart = chart,
+      title = title,
+      xAxis = xAxis,
+      yAxis = yAxis)
+  }
+
+  "HighCharts" should " generate" in {
+    val serializedConfig = highChart.build("container")
+
+    serializedConfig should equal("""chart:{"renderTo":"container","defaultSeriesType":"column"},title:{"text":"chart"},xAxis:{"categories":["jan","feb"]},credits:{"enabled":false},tooltip:{"shared":true},yAxis:{"title":{"text":"load"}},series:[]""")
+  }
+
+
+serializedConfig =
+  chart:{"renderTo":"container","defaultSeriesType":"column"},title:{"text":"chart"},xAxis:{"categories":["jan","feb"]},credits:{"enabled":false},tooltip:{"shared":true},yAxis:{"title":{"text":"load"}},series:[]
