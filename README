@@ -1,4 +1,6 @@
 Simple Scala generator of HighCharts' config in Javascript
+Get the highchars javascript library from www.highcharts.com
+
 
 Usage:
 

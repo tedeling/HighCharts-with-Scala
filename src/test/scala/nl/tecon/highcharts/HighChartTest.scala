@@ -1,7 +1,7 @@
 package nl.tecon.highcharts
 
 import config._
-import config.Conversions._
+import config.Conversions.valueToOption
 
 import org.scalatest.matchers.ShouldMatchers
 import scala.Predef._
