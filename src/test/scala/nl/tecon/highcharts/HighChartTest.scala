@@ -1,8 +1,8 @@
 package nl.tecon.highcharts
 
 import config._
-import config.Conversions.valueToOption
 
+import config.Conversions._
 import org.scalatest.matchers.ShouldMatchers
 import scala.Predef._
 import org.junit.runner.RunWith
@@ -100,6 +100,13 @@ class HighChartTest extends FlatSpec with ShouldMatchers with BeforeAndAfter {
     val serializedConfig = chart.build("container")
 
     serializedConfig should include("""tooltip:{formatter: dont escape me}""")
+  }
+
+  "HighCharts" should " build chart when nothing is provided" in {
+    val chart = highChart.copy(xAxis = None, yAxis = None)
+
+    val serializedConfig = chart.build("container")
+    assert(!serializedConfig.isEmpty)
   }
 
 
