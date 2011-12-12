@@ -29,7 +29,7 @@ class HighChartTest extends FlatSpec with ShouldMatchers with BeforeAndAfter {
 
   "HighCharts" should " generate" in {
     val serializedConfig = highChart.build("container")
-    print (serializedConfig)
+
     serializedConfig should equal("""chart:{"renderTo":"container","defaultSeriesType":"column"},title:{"text":"chart"},xAxis:{"categories":["jan","feb"]},credits:{"enabled":false},tooltip:{"shared":true},yAxis:{"title":{"text":"load"}},series:[]""")
   }
 
@@ -83,11 +83,16 @@ class HighChartTest extends FlatSpec with ShouldMatchers with BeforeAndAfter {
     serializedConfig should include("""series:[{"data":[1.0,2.2]}]""")
   }
 
+  "HighCharts" should " build chart with numeric double series and reversed axis" in {
+    val data: Series[Double] = Series[Double](data = List(1.0, 2.2))
+    val serializedConfig = highChart.copy(series = List(data)).build("container")
+
+    serializedConfig should include("""series:[{"data":[1.0,2.2]}]""")
+  }
+
   "HighCharts" should " build chart with named datetime integer series" in {
     val now = new DateTime(2011, 2, 20, 13, 0, 0, 0)
-    val chart = highChart.copy(series = List(Series[DateNumericValue](data = List(DateNumericValue(now, 1),
-      DateNumericValue(now.plusDays(1), 2)),
-      name = "s1")))
+    val chart = highChart.copy(series = List(Series[DateNumericValue](data = List(DateNumericValue(now, 1), DateNumericValue(now.plusDays(1), 2)), name = "s1")))
 
     val serializedConfig = chart.build("container")
 
@@ -108,7 +113,6 @@ class HighChartTest extends FlatSpec with ShouldMatchers with BeforeAndAfter {
     val serializedConfig = chart.build("container")
     assert(!serializedConfig.isEmpty)
   }
-
 
 }
 
