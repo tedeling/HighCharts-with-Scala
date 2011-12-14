@@ -23,14 +23,14 @@ class HighChartTest extends FlatSpec with ShouldMatchers with BeforeAndAfter {
   before {
     highChart = new HighChart(chart = chart,
       title = title,
-      xAxis = xAxis,
-      yAxis = yAxis)
+      xAxis = Seq(xAxis),
+      yAxis = Seq(yAxis))
   }
 
   "HighCharts" should " generate" in {
     val serializedConfig = highChart.build("container")
 
-    serializedConfig should equal("""chart:{"renderTo":"container","defaultSeriesType":"column"},title:{"text":"chart"},xAxis:{"categories":["jan","feb"]},credits:{"enabled":false},tooltip:{"shared":true},yAxis:{"title":{"text":"load"}},series:[]""")
+    serializedConfig should equal("""chart:{"renderTo":"container","defaultSeriesType":"column"},title:{"text":"chart"},xAxis:[{"categories":["jan","feb"]}],credits:{"enabled":false},tooltip:{"shared":true},yAxis:[{"title":{"text":"load"}}],series:[]""")
   }
 
   "HighCharts" should " build chart config with legend" in {
@@ -65,8 +65,7 @@ class HighChartTest extends FlatSpec with ShouldMatchers with BeforeAndAfter {
   }
 
   "HighCharts" should " build chart config with multiple axis" in {
-    highChart.addYAxis(Axis(title = new Title(text = "B")))
-    val serializedConfig = highChart.build("container")
+    val serializedConfig = highChart.copy(yAxis = Seq(yAxis, Axis(title = new Title(text = "B")))).build("container")
 
     serializedConfig should include("""yAxis:[{"title":{"text":"load"}},{"title":{"text":"B"}}]""")
   }
@@ -113,6 +112,5 @@ class HighChartTest extends FlatSpec with ShouldMatchers with BeforeAndAfter {
     val serializedConfig = chart.build("container")
     assert(!serializedConfig.isEmpty)
   }
-
 }
 

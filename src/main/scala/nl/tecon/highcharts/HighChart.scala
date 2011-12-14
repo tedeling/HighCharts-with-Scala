@@ -9,15 +9,14 @@ import net.liftweb.json.{Formats, DefaultFormats}
 
 case class HighChart(chart: Option[Chart] = None,
                      title: Option[Title] = None,
-                     xAxis: Option[Axis] = None,
-                     yAxis: Option[Axis] = None,
+                     xAxis: Option[Seq[Axis]] = None,
+                     yAxis: Option[Seq[Axis]] = None,
                      legend: Option[Legend] = None,
                      plotOptions: Option[PlotOptions] = None,
                      tooltip: Option[Tooltip] = Some(new Tooltip(Some(true))),
                      credits: Option[Credits] = Some(new Credits()),
                      series: Option[List[Series[_]]] = None,
                      marginLeft: Option[Int] = None) {
-  private val yAxisses = ListBuffer(if (yAxis.isDefined) yAxis.get else None)
 
   def build(renderTo: String): String = {
     implicit val formats = DefaultFormats + new NumericValueSerializer + new DateNumericValueSerializer + new EnumNameSerializer(Alignment) ++ JodaTimeSerializers.all
@@ -40,7 +39,7 @@ case class HighChart(chart: Option[Chart] = None,
     json append list.mkString(",")
     json append ","
     if (yAxis.isDefined) {
-      json append serialize("yAxis", yAxisses)
+      json append serialize("yAxis", yAxis.get)
       json append ","
     }
     json append (serializeSeries(series))
@@ -77,10 +76,6 @@ case class HighChart(chart: Option[Chart] = None,
   private def listOrFirstElement(obj: AnyRef): AnyRef = {
     val list = obj.asInstanceOf[ListBuffer[AnyRef]]
     if (list.size > 1) list else list(0)
-  }
-
-  def addYAxis(yAxis: Axis) {
-    yAxisses += yAxis
   }
 }
 

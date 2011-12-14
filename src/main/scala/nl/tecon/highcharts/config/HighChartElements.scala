@@ -20,9 +20,9 @@ object AxisType extends Enumeration("linear", "datetime") {
   val Linear, Datetime = Value
 }
 
-object SeriesType extends Enumeration("column", "line", "spline", "area") {
+object SeriesType extends Enumeration("column", "line", "spline", "area", "bar") {
   type Type = Value
-  val Column, Line, Spline, Area = Value
+  val Column, Line, Spline, Area, Bar = Value
 }
 
 object ZoomType extends Enumeration("x", "y", "xy") {
