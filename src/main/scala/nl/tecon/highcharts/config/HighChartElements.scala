@@ -62,7 +62,8 @@ case class Axis(categories: Option[Array[String]] = None,
 case class Chart(renderTo: Option[String] = None,
                  defaultSeriesType: Option[SeriesType.Type] = None,
                  animation: Option[Boolean] = None,
-                 zoomType: Option[ZoomType.Type] = None)
+                 zoomType: Option[ZoomType.Type] = None,
+                 height: Option[Int] = None)
 
 case class Credits(enabled: Boolean = false)
 
