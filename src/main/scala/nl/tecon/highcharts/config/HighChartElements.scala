@@ -91,4 +91,5 @@ case class Marker(enabled: Boolean = true)
 case class Tooltip(shared: Option[Boolean] = None,
                     formatter: Option[String] = None)
 
-case class Labels(rotation: Option[Int] = None)
+case class Labels(rotation: Option[Int] = None,
+                   formatter: Option[String] = None)

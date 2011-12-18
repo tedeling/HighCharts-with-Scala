@@ -113,10 +113,16 @@ class HighChartTest extends FlatSpec with ShouldMatchers with BeforeAndAfter {
     assert(!serializedConfig.isEmpty)
   }
 
-  "HighCharts" should " build chart with set height" in {
+  "HighCharts" should " have height set" in {
     val serializedConfig = highChart.copy(chart = chart.copy(height = 300)).build("container")
 
     serializedConfig should include(""""height":300""")
+  }
+
+  "HighCharts" should " have formatted labels on the axis" in {
+    val serializedConfig = highChart.copy(yAxis = Seq(new Axis(labels = Labels(formatter = "function() { return this.value +'km';}"  )))).build("container")
+
+    serializedConfig should include("""yAxis:[{"labels":{"formatter":"function()""")
   }
 
 
