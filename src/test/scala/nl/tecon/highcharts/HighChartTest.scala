@@ -27,6 +27,18 @@ class HighChartTest extends FlatSpec with ShouldMatchers with BeforeAndAfter {
       yAxis = Seq(yAxis))
   }
 
+  "HighCharts" should " have formatted labels on the axis" in {
+    val serializedConfig = highChart.copy(yAxis = Seq(new Axis(labels = Labels(formatter = JavascriptFunction(function = "function() { return this.value +'km';}")  )))).build("container")
+
+    serializedConfig should include("""yAxis:[{"labels":{"formatter":function() { return this.value +'km';}""")
+  }
+
+  "HighCharts" should " unquote multiple JavascriptFunctions properly" in {
+    val unquoted = highChart.unquoteJavascriptFunction(""" "${JSF}$first block${/JSF}$", "2", "${JSF}$second block${/JSF}$" """);
+
+    unquoted should equal(""" first block, "2", second block """)
+  }
+
   "HighCharts" should " generate" in {
     val serializedConfig = highChart.build("container")
 
@@ -118,13 +130,6 @@ class HighChartTest extends FlatSpec with ShouldMatchers with BeforeAndAfter {
 
     serializedConfig should include(""""height":300""")
   }
-
-  "HighCharts" should " have formatted labels on the axis" in {
-    val serializedConfig = highChart.copy(yAxis = Seq(new Axis(labels = Labels(formatter = "function() { return this.value +'km';}"  )))).build("container")
-
-    serializedConfig should include("""yAxis:[{"labels":{"formatter":"function()""")
-  }
-
 
 }
 

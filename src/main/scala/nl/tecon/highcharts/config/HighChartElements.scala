@@ -1,5 +1,7 @@
 package nl.tecon.highcharts.config
 
+import nl.tecon.highcharts.config._
+
 object Alignment extends Enumeration("left", "center", "right") {
   type Type = Value
   val Left, Center, Right = Value
@@ -29,6 +31,9 @@ object ZoomType extends Enumeration("x", "y", "xy") {
   type Type = Value
   val X, Y, XY = Value
 }
+
+case class Labels(rotation: Option[Int] = None,
+                    formatter: Option[JavascriptFunction] = None)
 
 case class Legend(align: Option[Alignment.Type] = None,
                   verticalAlign: Option[VerticalAlignment.Type] = None,
@@ -85,11 +90,11 @@ case class PlotOptionsColumn(stacking: String = "normal",
 
 case class PlotOptionsColumnDataLabels(enabled: Boolean = false)
 
-
 case class Marker(enabled: Boolean = true)
 
 case class Tooltip(shared: Option[Boolean] = None,
                     formatter: Option[String] = None)
 
-case class Labels(rotation: Option[Int] = None,
-                   formatter: Option[String] = None)
+case class JavascriptFunction(function: String)
+
+
