@@ -6,7 +6,7 @@ import collection.mutable.ListBuffer
 import net.liftweb.json.Serialization.write
 import net.liftweb.json.ext.{JodaTimeSerializers, EnumNameSerializer}
 import net.liftweb.json._
-import java.io.StringWriter
+
 
 case class HighChart(chart: Option[Chart] = None,
                      title: Option[Title] = None,
@@ -29,7 +29,7 @@ case class HighChart(chart: Option[Chart] = None,
       serialize("plotOptions", plotOptions),
       serialize("xAxis", xAxis),
       serialize("credits", credits),
-      serializeTooltip(tooltip))
+      serialize("tooltip", tooltip))
 
     val list = for (e <- filterDefined(serialized)) yield e.get
 
@@ -46,16 +46,6 @@ case class HighChart(chart: Option[Chart] = None,
     json append (serializeSeries(series))
 
     postProcess(json.toString())
-  }
-
-  private def serializeTooltip(tooltip: Option[Tooltip])(implicit formats: Formats): Option[String] = {
-    if (tooltip.isDefined) {
-      if (tooltip.get.formatter.isDefined)
-        Some("tooltip:{formatter: %s}".format(tooltip.get.formatter.get))
-      else
-        Some("tooltip:%s".format(write(tooltip)))
-    } else
-      None
   }
 
   def serializeSeries(series: Option[List[Series[_]]])(implicit formats: Formats) = postProcessSeries(serialize("series", series.getOrElse(List())))
@@ -77,8 +67,6 @@ case class HighChart(chart: Option[Chart] = None,
 
     "%s:%s".format(name, write(toSerialize))
   }
-
-  private def write(data: AnyRef)(implicit formats: Formats) = Printer.compact(JsonAST.render(Extraction.decompose(data)(formats)), new StringWriter)
 
   private def listOrFirstElement(obj: AnyRef): AnyRef = {
     val list = obj.asInstanceOf[ListBuffer[AnyRef]]

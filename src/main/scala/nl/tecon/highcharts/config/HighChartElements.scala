@@ -1,6 +1,5 @@
 package nl.tecon.highcharts.config
 
-import nl.tecon.highcharts.config._
 
 object Alignment extends Enumeration("left", "center", "right") {
   type Type = Value
@@ -93,7 +92,7 @@ case class PlotOptionsColumnDataLabels(enabled: Boolean = false)
 case class Marker(enabled: Boolean = true)
 
 case class Tooltip(shared: Option[Boolean] = None,
-                    formatter: Option[String] = None)
+                    formatter: Option[JavascriptFunction] = None)
 
 case class JavascriptFunction(function: String)
 

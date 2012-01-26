@@ -111,11 +111,11 @@ class HighChartTest extends FlatSpec with ShouldMatchers with BeforeAndAfter {
   }
 
   "HighCharts" should " build chart with tooltip function unescaped" in {
-    val chart = highChart.copy(tooltip = Tooltip(formatter = "dont escape me"))
+    val chart = highChart.copy(tooltip = Tooltip(formatter = JavascriptFunction("function() { return 'dont escape me'}")))
 
     val serializedConfig = chart.build("container")
 
-    serializedConfig should include("""tooltip:{formatter: dont escape me}""")
+    serializedConfig should include("""tooltip:{"formatter":function() { return 'dont escape me'}}""")
   }
 
   "HighCharts" should " build chart when nothing is provided" in {
