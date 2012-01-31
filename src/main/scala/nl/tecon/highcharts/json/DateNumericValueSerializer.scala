@@ -6,7 +6,7 @@ import nl.tecon.highcharts.config.DateNumericValue
 
 class DateNumericValueSerializer extends Serializer[DateNumericValue] {
   override def serialize(implicit format: Formats) = {
-   case d: DateNumericValue =>  JArray(List(JString("Date.UTC(" + d.key.getYear + "," + (d.key.getMonthOfYear - 1) + "," + d.key.getDayOfMonth + ")"),
+   case d: DateNumericValue =>  JArray(List(JString("Date.UTC(" + d.date.getYear + "," + (d.date.getMonthOfYear - 1) + "," + d.date.getDayOfMonth + ")"),
                                        JDouble(d.value.doubleValue())))
   }
 

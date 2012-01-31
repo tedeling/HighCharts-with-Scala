@@ -20,11 +20,11 @@ Usage:
   }
 
   "HighCharts" should " generate" in {
-    val serializedConfig = highChart.build("container")
+    val serializedChart = highChart.build("container")
 
-    serializedConfig should equal("""chart:{"renderTo":"container","defaultSeriesType":"column"},title:{"text":"chart"},xAxis:{"categories":["jan","feb"]},credits:{"enabled":false},tooltip:{"shared":true},yAxis:{"title":{"text":"load"}},series:[]""")
+    serializedChart should equal("""chart:{"renderTo":"container","defaultSeriesType":"column"},title:{"text":"chart"},xAxis:{"categories":["jan","feb"]},credits:{"enabled":false},tooltip:{"shared":true},yAxis:{"title":{"text":"load"}},series:[]""")
   }
 
 
-serializedConfig =
+serializedChart =
   chart:{"renderTo":"container","defaultSeriesType":"column"},title:{"text":"chart"},xAxis:{"categories":["jan","feb"]},credits:{"enabled":false},tooltip:{"shared":true},yAxis:{"title":{"text":"load"}},series:[]

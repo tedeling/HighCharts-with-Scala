@@ -16,7 +16,7 @@ case class HighChart(chart: Option[Chart] = None,
                      plotOptions: Option[PlotOptions] = None,
                      tooltip: Option[Tooltip] = Some(new Tooltip(Some(true))),
                      credits: Option[Credits] = Some(new Credits()),
-                     series: Option[List[Series[_]]] = None,
+                     series: Option[List[_ <: AbstractSeries[_]]] = None,
                      marginLeft: Option[Int] = None) {
 
   def build(renderTo: String): String = {
@@ -48,7 +48,15 @@ case class HighChart(chart: Option[Chart] = None,
     postProcess(json.toString())
   }
 
-  def serializeSeries(series: Option[List[Series[_]]])(implicit formats: Formats) = postProcessSeries(serialize("series", series.getOrElse(List())))
+  def serializeSeries(series: Option[List[_ <: AbstractSeries[_]]])(implicit formats: Formats) = {
+    val processedSeries = if (series.isDefined) {
+      for (serie <- series.get) yield { serie.preProcess()}
+    } else {
+      List()
+    }
+
+    postProcessSeries(serialize("series", processedSeries))
+  }
 
   private def postProcessSeries(json: String) = json.replaceAll("\"Date", "Date").replaceAll("\\)\"", "\\)")
 

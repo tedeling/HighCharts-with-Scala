@@ -28,9 +28,9 @@ class HighChartTest extends FlatSpec with ShouldMatchers with BeforeAndAfter {
   }
 
   "HighCharts" should " have formatted labels on the axis" in {
-    val serializedConfig = highChart.copy(yAxis = Seq(new Axis(labels = Labels(formatter = JavascriptFunction(function = "function() { return this.value +'km';}")  )))).build("container")
+    val serializedChart = highChart.copy(yAxis = Seq(new Axis(labels = Labels(formatter = JavascriptFunction(function = "function() { return this.value +'km';}")  )))).build("container")
 
-    serializedConfig should include("""yAxis:[{"labels":{"formatter":function() { return this.value +'km';}""")
+    serializedChart should include("""yAxis:[{"labels":{"formatter":function() { return this.value +'km';}""")
   }
 
   "HighCharts" should " unquote multiple JavascriptFunctions properly" in {
@@ -40,95 +40,104 @@ class HighChartTest extends FlatSpec with ShouldMatchers with BeforeAndAfter {
   }
 
   "HighCharts" should " generate" in {
-    val serializedConfig = highChart.build("container")
+    val serializedChart = highChart.build("container")
 
-    serializedConfig should equal("""chart:{"renderTo":"container","defaultSeriesType":"column"},title:{"text":"chart"},xAxis:[{"categories":["jan","feb"]}],credits:{"enabled":false},tooltip:{"shared":true},yAxis:[{"title":{"text":"load"}}],series:[]""")
+    serializedChart should equal("""chart:{"renderTo":"container","defaultSeriesType":"column"},title:{"text":"chart"},xAxis:[{"categories":["jan","feb"]}],credits:{"enabled":false},tooltip:{"shared":true},yAxis:[{"title":{"text":"load"}}],series:[]""")
   }
 
   "HighCharts" should " build chart config with legend" in {
     val legend = Legend(align = Alignment.Left, verticalAlign = VerticalAlignment.Top, y = 20, floating = true, borderWidth = 0)
 
-    val serializedConfig = highChart.copy(legend = legend).build("container")
+    val serializedChart = highChart.copy(legend = legend).build("container")
 
-    serializedConfig should include("""legend:{"align":"left","verticalAlign":"top","y":20,"floating":true,"borderWidth":0}""")
+    serializedChart should include("""legend:{"align":"left","verticalAlign":"top","y":20,"floating":true,"borderWidth":0}""")
   }
 
   "HighCharts" should " build chart config with series plotOptions" in {
     val plotOptions = PlotOptions(PlotOptionsSeries(marker = Marker(false)))
 
-    val serializedConfig = highChart.copy(plotOptions = plotOptions).build("container")
+    val serializedChart = highChart.copy(plotOptions = plotOptions).build("container")
 
-    serializedConfig should include("""plotOptions:{"series":{"marker":{"enabled":false}}}""")
+    serializedChart should include("""plotOptions:{"series":{"marker":{"enabled":false}}}""")
   }
 
   "HighCharts" should " build chart config with column plotOptions" in {
     val plotOptions = PlotOptions(column = PlotOptionsColumn(pointWidth = 10))
 
-    val serializedConfig = highChart.copy(plotOptions = plotOptions).build("container")
+    val serializedChart = highChart.copy(plotOptions = plotOptions).build("container")
 
-    serializedConfig should include("""plotOptions:{"column":{"stacking":"normal","pointWidth":10}}""")
+    serializedChart should include("""plotOptions:{"column":{"stacking":"normal","pointWidth":10}}""")
   }
 
 
   "HighCharts" should " build chart config with tooltip" in {
-    val serializedConfig = highChart.copy(tooltip = Tooltip(true)).build("container")
+    val serializedChart = highChart.copy(tooltip = Tooltip(true)).build("container")
 
-    serializedConfig should include("""tooltip:{"shared":true}""")
+    serializedChart should include("""tooltip:{"shared":true}""")
   }
 
   "HighCharts" should " build chart config with multiple axis" in {
-    val serializedConfig = highChart.copy(yAxis = Seq(yAxis, Axis(title = new Title(text = "B")))).build("container")
+    val serializedChart = highChart.copy(yAxis = Seq(yAxis, Axis(title = new Title(text = "B")))).build("container")
 
-    serializedConfig should include("""yAxis:[{"title":{"text":"load"}},{"title":{"text":"B"}}]""")
+    serializedChart should include("""yAxis:[{"title":{"text":"load"}},{"title":{"text":"B"}}]""")
   }
 
   "HighCharts" should " build chart with number series" in {
-    val serializedConfig = highChart.copy(series = List(Series[Int](data = List(1, 2)))).build("container")
+    val serializedChart = highChart.copy(series = List(Series[Int](data = List(1, 2)))).build("container")
 
-    serializedConfig should include("""series:[{"data":[1,2]}]""")
+    serializedChart should include("""series:[{"data":[1,2]}]""")
   }
 
   "HighCharts" should " build chart with numeric double series" in {
-    val serializedConfig = highChart.copy(series = List(Series[Double](data = List(1.0, 2.2)))).build("container")
+    val serializedChart = highChart.copy(series = List(Series[Double](data = List(1.0, 2.2)))).build("container")
 
-    serializedConfig should include("""series:[{"data":[1.0,2.2]}]""")
+    serializedChart should include("""series:[{"data":[1.0,2.2]}]""")
   }
 
   "HighCharts" should " build chart with numeric double series and reversed axis" in {
     val data: Series[Double] = Series[Double](data = List(1.0, 2.2))
-    val serializedConfig = highChart.copy(series = List(data)).build("container")
+    val serializedChart = highChart.copy(series = List(data)).build("container")
 
-    serializedConfig should include("""series:[{"data":[1.0,2.2]}]""")
+    serializedChart should include("""series:[{"data":[1.0,2.2]}]""")
   }
 
   "HighCharts" should " build chart with named datetime integer series" in {
     val now = new DateTime(2011, 2, 20, 13, 0, 0, 0)
     val chart = highChart.copy(series = List(Series[DateNumericValue](data = List(DateNumericValue(now, 1), DateNumericValue(now.plusDays(1), 2)), name = "s1")))
 
-    val serializedConfig = chart.build("container")
+    val serializedChart = chart.build("container")
 
-    serializedConfig should include("""series:[{"name":"s1","data":[[Date.UTC(2011,1,20),1.0],[Date.UTC(2011,1,21),2.0]]}]""")
+    serializedChart should include("""series:[{"name":"s1","data":[[Date.UTC(2011,1,20),1.0],[Date.UTC(2011,1,21),2.0]]}]""")
   }
 
   "HighCharts" should " build chart with tooltip function unescaped" in {
     val chart = highChart.copy(tooltip = Tooltip(formatter = JavascriptFunction("function() { return 'dont escape me'}")))
 
-    val serializedConfig = chart.build("container")
+    val serializedChart = chart.build("container")
 
-    serializedConfig should include("""tooltip:{"formatter":function() { return 'dont escape me'}}""")
+    serializedChart should include("""tooltip:{"formatter":function() { return 'dont escape me'}}""")
   }
 
   "HighCharts" should " build chart when nothing is provided" in {
     val chart = highChart.copy(xAxis = None, yAxis = None)
 
-    val serializedConfig = chart.build("container")
-    assert(!serializedConfig.isEmpty)
+    val serializedChart = chart.build("container")
+    assert(!serializedChart.isEmpty)
   }
 
   "HighCharts" should " have height set" in {
-    val serializedConfig = highChart.copy(chart = chart.copy(height = 300)).build("container")
+    val serializedChart = highChart.copy(chart = chart.copy(height = 300)).build("container")
 
-    serializedConfig should include(""""height":300""")
+    serializedChart should include(""""height":300""")
+  }
+
+  "HighCharts" should " build chart with padded date series" in {
+    val now = new DateTime(2011, 2, 20, 13, 0, 0, 0)
+    val chart = highChart.copy(series = List(PaddedDateSeries(data = List(DateNumericValue(now, 1), DateNumericValue(now.plusDays(2), 2)), name = "s1")))
+
+    val serializedChart = chart.build("container")
+
+    serializedChart should include("""series:[{"name":"s1","data":[1,0,2]""")
   }
 
 }
