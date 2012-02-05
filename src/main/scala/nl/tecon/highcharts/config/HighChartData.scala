@@ -4,6 +4,7 @@ package nl.tecon.highcharts.config
 import org.joda.time.{DateTime, Days}
 import collection.mutable.ListBuffer
 import collection.Seq
+import nl.tecon.highcharts.HighChart
 
 
 case class ValuePoint[V](givenValue: V)
@@ -26,20 +27,22 @@ case class Series[T](name: Option[String] = None,
                      yAxis: Option[Int] = None) extends AbstractSeries[T]
 
 
-case class PaddedDateSeries(name: Option[String] = None,
+case class SparseDateSeries(name: Option[String] = None,
                      data: Seq[DateNumericValue],
+                     dateStart: Option[DateTime] = None,
+                     dateEnd: Option[DateTime] = None,
                      yAxis: Option[Int] = None) extends AbstractSeries[DateNumericValue]
 {
   override def preProcess(): Series[Number] = {
     val sortedData = data.sortWith(_ < _)
 
-    val dateStart = sortedData.head.date
-    val dateEnd = sortedData.last.date
+    val startDate = if (dateStart.isDefined) dateStart.get else sortedData.head.date
+    val endDate = if (dateEnd.isDefined) dateEnd.get else sortedData.last.date
 
     val dateMappedValues: Map[DateTime,  Number] = (for (d <- sortedData) yield (d.date, d.value)).toMap
 
     def padSeriesData(date: DateTime, paddedSeries: ListBuffer[Number] = new ListBuffer[Number]()): Seq[Number] = {
-      if (date isAfter dateEnd) {
+      if (date isAfter endDate) {
         paddedSeries.toSeq
       } else {
         paddedSeries.append(dateMappedValues.getOrElse(date, 0))
@@ -47,7 +50,7 @@ case class PaddedDateSeries(name: Option[String] = None,
       }
     }
 
-    val paddedSeriesData = padSeriesData(dateStart)
+    val paddedSeriesData = padSeriesData(startDate)
 
     Series[Number](name, paddedSeriesData, yAxis)
   }

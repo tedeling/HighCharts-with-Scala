@@ -128,18 +128,40 @@ class HighChartTest extends FlatSpec with ShouldMatchers with BeforeAndAfter {
     serializedChart should include(""""height":300""")
   }
 
-  "HighCharts" should " have a padded date series filling gaps with zeros" in {
+  "HighCharts" should " treat gaps in sparse date series as zero" in {
     val now = new DateTime(2011, 2, 20, 13, 0, 0, 0)
     val chart = highChart.copy(xAxis = Seq(Axis(axisType = AxisType.Datetime)),
-      series = List(PaddedDateSeries(data = List(DateNumericValue(now, 1), DateNumericValue(now.plusDays(2), 2)), name = "s1")))
+      series = List(SparseDateSeries(data = List(DateNumericValue(now, 1), DateNumericValue(now.plusDays(2), 2)), name = "s1")))
 
     chart.build("container") should include("""series:[{"name":"s1","data":[1,0,2]""")
   }
 
-  "HighCharts" should " build chart with unquoted pointstart and interval set" in {
+  "HighCharts" should " treat gaps in sparse date series with an explicit start date as zero" in {
+    val now = new DateTime(2011, 2, 20, 13, 0, 0, 0)
+
+    val data = List(DateNumericValue(now.plusDays(2), 1), DateNumericValue(now.plusDays(4), 2))
+    val sparseSeries = SparseDateSeries(data = data, dateStart = now, name = "s1")
+
+    val chart = highChart.copy(xAxis = Seq(Axis(axisType = AxisType.Datetime)), series = List(sparseSeries))
+
+    chart.build("container") should include("""series:[{"name":"s1","data":[0,0,1,0,2]""")
+  }
+
+  "HighCharts" should " treat gaps in sparse date series with an explicit start and end date as zero" in {
+    val now = new DateTime(2011, 2, 20, 13, 0, 0, 0)
+
+    val data = List(DateNumericValue(now.plusDays(1), 1), DateNumericValue(now.plusDays(3), 2))
+    val sparseSeries = SparseDateSeries(data = data, dateStart = now, dateEnd = now.plusDays(4), name = "s1")
+
+    val chart = highChart.copy(xAxis = Seq(Axis(axisType = AxisType.Datetime)), series = List(sparseSeries))
+
+    chart.build("container") should include("""series:[{"name":"s1","data":[0,1,0,2,0]""")
+  }
+
+
+  "HighCharts" should " unquoted pointstart and interval set" in {
     val now = new DateTime(2011, 2, 20, 13, 0, 0, 0)
     val chart = highChart.copy(plotOptions = PlotOptions(PlotOptionsSeries(pointStart = now, pointInterval = PointInterval.DAY)))
-
 
     chart.build("container") should include("""plotOptions:{"series":{"pointStart":Date.UTC(2011,1, 20),"pointInterval":86400000}}""")
   }
