@@ -113,16 +113,13 @@ class HighChartTest extends FlatSpec with ShouldMatchers with BeforeAndAfter {
   "HighCharts" should " build chart with tooltip function unescaped" in {
     val chart = highChart.copy(tooltip = Tooltip(formatter = JavascriptFunction("function() { return 'dont escape me'}")))
 
-    val serializedChart = chart.build("container")
-
-    serializedChart should include("""tooltip:{"formatter":function() { return 'dont escape me'}}""")
+    chart.build("container") should include("""tooltip:{"formatter":function() { return 'dont escape me'}}""")
   }
 
   "HighCharts" should " build chart when nothing is provided" in {
     val chart = highChart.copy(xAxis = None, yAxis = None)
 
-    val serializedChart = chart.build("container")
-    assert(!serializedChart.isEmpty)
+    assert(!chart.build("container").isEmpty)
   }
 
   "HighCharts" should " have height set" in {
@@ -131,13 +128,20 @@ class HighChartTest extends FlatSpec with ShouldMatchers with BeforeAndAfter {
     serializedChart should include(""""height":300""")
   }
 
-  "HighCharts" should " build chart with padded date series" in {
+  "HighCharts" should " have a padded date series filling gaps with zeros" in {
     val now = new DateTime(2011, 2, 20, 13, 0, 0, 0)
-    val chart = highChart.copy(series = List(PaddedDateSeries(data = List(DateNumericValue(now, 1), DateNumericValue(now.plusDays(2), 2)), name = "s1")))
+    val chart = highChart.copy(xAxis = Seq(Axis(axisType = AxisType.Datetime)),
+      series = List(PaddedDateSeries(data = List(DateNumericValue(now, 1), DateNumericValue(now.plusDays(2), 2)), name = "s1")))
 
-    val serializedChart = chart.build("container")
+    chart.build("container") should include("""series:[{"name":"s1","data":[1,0,2]""")
+  }
 
-    serializedChart should include("""series:[{"name":"s1","data":[1,0,2]""")
+  "HighCharts" should " build chart with unquoted pointstart and interval set" in {
+    val now = new DateTime(2011, 2, 20, 13, 0, 0, 0)
+    val chart = highChart.copy(plotOptions = PlotOptions(PlotOptionsSeries(pointStart = now, pointInterval = PointInterval.DAY)))
+
+
+    chart.build("container") should include("""plotOptions:{"series":{"pointStart":Date.UTC(2011,1, 20),"pointInterval":86400000}}""")
   }
 
 }

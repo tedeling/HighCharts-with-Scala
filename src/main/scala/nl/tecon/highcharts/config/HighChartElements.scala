@@ -1,5 +1,7 @@
 package nl.tecon.highcharts.config
 
+import org.joda.time.DateTime
+
 
 object Alignment extends Enumeration("left", "center", "right") {
   type Type = Value
@@ -71,11 +73,16 @@ case class Chart(renderTo: Option[String] = None,
 
 case class Credits(enabled: Boolean = false)
 
+object PointInterval {
+  val DAY = 24 * 3600 * 1000
+}
+
 case class PlotOptions(series: Option[PlotOptionsSeries] = None,
                         column: Option[PlotOptionsColumn] = None
                         )
 
 case class PlotOptionsSeries(shadow: Option[Boolean] = None,
+                             pointStart: Option[DateTime] = None,
                              pointInterval: Option[Int] = None,
                              marker: Option[Marker] = None,
                              pointWidth: Option[Int] = None,

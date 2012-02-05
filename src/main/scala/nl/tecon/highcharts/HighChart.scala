@@ -4,9 +4,8 @@ import config._
 import json._
 import collection.mutable.ListBuffer
 import net.liftweb.json.Serialization.write
-import net.liftweb.json.ext.{JodaTimeSerializers, EnumNameSerializer}
+import net.liftweb.json.ext.EnumNameSerializer
 import net.liftweb.json._
-
 
 case class HighChart(chart: Option[Chart] = None,
                      title: Option[Title] = None,
@@ -19,14 +18,14 @@ case class HighChart(chart: Option[Chart] = None,
                      series: Option[List[_ <: AbstractSeries[_]]] = None,
                      marginLeft: Option[Int] = None) {
 
-  def build(renderTo: String): String = {
-    implicit val formats = DefaultFormats + new NumericValueSerializer + new DateNumericValueSerializer + new EnumNameSerializer(Alignment) + new JavascriptFunctionSerializer() ++ JodaTimeSerializers.all
+  implicit val formats = DefaultFormats + new NumericValueSerializer + new DateNumericValueSerializer + new EnumNameSerializer(Alignment) + new JavascriptFunctionSerializer() + new DateTimeSerializer()
 
+  def build(renderTo: String): String = {
     val targetedChart = chart.get.copy(renderTo = Some(renderTo))
 
     val serialized = List(serialize("legend", legend),
       serialize("title", title),
-      serialize("plotOptions", plotOptions),
+      serializePlotOptions(plotOptions),
       serialize("xAxis", xAxis),
       serialize("credits", credits),
       serialize("tooltip", tooltip))
@@ -48,6 +47,8 @@ case class HighChart(chart: Option[Chart] = None,
     postProcess(json.toString())
   }
 
+  def serializePlotOptions(plotOptions: Option[PlotOptions]) = if (plotOptions.isDefined) Some(unquoteDate(serialize("plotOptions", plotOptions.get))) else None
+
   def serializeSeries(series: Option[List[_ <: AbstractSeries[_]]])(implicit formats: Formats) = {
     val processedSeries = if (series.isDefined) {
       for (serie <- series.get) yield { serie.preProcess()}
@@ -55,10 +56,10 @@ case class HighChart(chart: Option[Chart] = None,
       List()
     }
 
-    postProcessSeries(serialize("series", processedSeries))
+    unquoteDate(serialize("series", processedSeries))
   }
 
-  private def postProcessSeries(json: String) = json.replaceAll("\"Date", "Date").replaceAll("\\)\"", "\\)")
+  private def unquoteDate(json: String) = json.replaceAll("\"Date", "Date").replaceAll("\\)\"", "\\)")
 
   private def postProcess(json: String) = unquoteJavascriptFunction(renameAxisType(json))
 
@@ -70,7 +71,7 @@ case class HighChart(chart: Option[Chart] = None,
 
   private def serialize(name: String, obj: Option[AnyRef])(implicit formats: Formats): Option[String] = if (obj.isDefined) Some(serialize(name, obj.get)) else None
 
-  private def serialize(name: String, obj: AnyRef)(implicit formats: Formats): String = {
+  private def serialize(name: String, obj: AnyRef): String = {
     val toSerialize = if (obj.isInstanceOf[ListBuffer[_]]) listOrFirstElement(obj) else obj
 
     "%s:%s".format(name, write(toSerialize))

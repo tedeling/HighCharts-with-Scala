@@ -23,15 +23,11 @@ class AbstractSeries[T] {
 
 case class Series[T](name: Option[String] = None,
                      data: Iterable[T],
-                     pointStart: Option[DateTime] = None,
-                     pointInterval: Option[Int] = None,
                      yAxis: Option[Int] = None) extends AbstractSeries[T]
 
 
 case class PaddedDateSeries(name: Option[String] = None,
                      data: Seq[DateNumericValue],
-//                     pointStart: DateTime,
-//                     pointEnd: DateTime,
                      yAxis: Option[Int] = None) extends AbstractSeries[DateNumericValue]
 {
   override def preProcess(): Series[Number] = {
@@ -53,7 +49,7 @@ case class PaddedDateSeries(name: Option[String] = None,
 
     val paddedSeriesData = padSeriesData(dateStart)
 
-    Series[Number](name, paddedSeriesData, Some(dateStart), Some(24 * 3600 * 1000), yAxis)
+    Series[Number](name, paddedSeriesData, yAxis)
   }
 }
 
