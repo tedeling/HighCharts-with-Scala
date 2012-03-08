@@ -1,15 +1,14 @@
 package nl.tecon.highcharts.config
 
 
-import org.joda.time.{DateTime, Days}
+import org.joda.time.DateTime
 import collection.mutable.ListBuffer
 import collection.Seq
-import nl.tecon.highcharts.HighChart
 
 
 case class ValuePoint[V](givenValue: V)
 
-case class KeyValuePoint[K, V](givenKey: K, givenValue: V)
+class KeyValuePoint[K, V](val givenKey: K, val  givenValue: V)
 
 case class NumericValue(key: Number, value: Number) extends KeyValuePoint[Number, Number](key, value)
 

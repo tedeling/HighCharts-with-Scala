@@ -107,16 +107,18 @@
                 <groupId>org.scala-tools</groupId>
                 <artifactId>maven-scala-plugin</artifactId>
                 <version>2.15.2</version>
-                <!--
-                        <configuration>
-                                            <jvmArgs>
-                                                <arg>-client</arg>
-                                                <arg>-d32</arg>
-                                                <arg>-Xms256m</arg>
-                                                <arg>-Xmx256m</arg>
-                                            </jvmArgs>
-                        </configuration>
-                -->
+                <configuration>
+                    <jvmArgs>
+                        <arg>-client</arg>
+                        <arg>${scala.compiler.jvm.mode}</arg>
+                        <arg>-Xms256m</arg>
+                        <arg>-Xmx256m</arg>
+                    </jvmArgs>
+                    <args>
+                        <arg>-deprecation</arg>
+                        <arg>-unchecked</arg>
+                    </args>
+                </configuration>
                 <executions>
                     <execution>
                         <id>scala-compile-first</id>
@@ -173,22 +175,9 @@
                     <value>32</value>
                 </property>
             </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.scala-tools</groupId>
-                        <artifactId>maven-scala-plugin</artifactId>
-                        <configuration>
-                            <jvmArgs>
-                                <arg>-client</arg>
-                                <arg>-d32</arg>
-                                <arg>-Xms256m</arg>
-                                <arg>-Xmx256m</arg>
-                            </jvmArgs>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
+            <properties>
+                <scala.compiler.jvm.mode>-d32</scala.compiler.jvm.mode>
+            </properties>
         </profile>
 
         <profile>
@@ -199,17 +188,11 @@
                     <value>64</value>
                 </property>
             </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.scala-tools</groupId>
-                        <artifactId>maven-scala-plugin</artifactId>
-                    </plugin>
-                </plugins>
-            </build>
+            <properties>
+                <scala.compiler.jvm.mode>-d64</scala.compiler.jvm.mode>
+            </properties>
         </profile>
     </profiles>
-
 
     <repositories>
         <repository>
