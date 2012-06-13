@@ -4,7 +4,7 @@
     <groupId>nl.tecon.scalahighcharts</groupId>
     <artifactId>highcharts</artifactId>
     <packaging>jar</packaging>
-    <version>1.1</version>
+    <version>1.2-SNAPSHOT</version>
     <name>Scala HighCharts</name>
 
     <properties>
@@ -232,7 +232,7 @@
         <connection>scm:git:git@github.com:tedeling/HighCharts-with-Scala.git</connection>
         <url>scm:git:git@github.com:tedeling/HighCharts-with-Scala.git</url>
         <developerConnection>scm:git:git@github.com:tedeling/HighCharts-with-Scala.git</developerConnection>
-      <tag>RELEASE-1.1</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <distributionManagement>
