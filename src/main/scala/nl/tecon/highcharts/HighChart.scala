@@ -38,10 +38,15 @@ case class HighChart(chart: Option[Chart] = None,
     json append ","
     json append list.mkString(",")
     json append ","
-    if (yAxis.isDefined) {
-      json append serialize("yAxis", yAxis.get)
-      json append ","
+
+    yAxis match {
+      case Some(f) => {
+        json append serialize("yAxis", f)
+        json append ","
+      }
+      case _ =>
     }
+
     json append (serializeSeries(series))
 
     postProcess(json.toString())
@@ -50,10 +55,13 @@ case class HighChart(chart: Option[Chart] = None,
   def serializePlotOptions(plotOptions: Option[PlotOptions]) = if (plotOptions.isDefined) Some(unquoteDate(serialize("plotOptions", plotOptions.get))) else None
 
   def serializeSeries(series: Option[List[_ <: AbstractSeries[_]]])(implicit formats: Formats) = {
-    val processedSeries = if (series.isDefined) {
-      for (serie <- series.get) yield { serie.preProcess()}
-    } else {
-      List()
+    val processedSeries = series match {
+      case Some(s) => {
+        for (serie <- series.get) yield {
+          serie.preProcess()
+        }
+      }
+      case _ => List()
     }
 
     unquoteDate(serialize("series", processedSeries))
