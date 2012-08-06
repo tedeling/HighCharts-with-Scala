@@ -217,7 +217,7 @@
     <repositories>
         <repository>
             <id>nexus</id>
-            <url>http://dev.ehour.nl/nexus/content/groups/public/</url>
+            <url>http://nexus.te-con.nl/content/groups/public/</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
@@ -239,12 +239,12 @@
         <repository>
             <id>tecon-releases</id>
             <name>TE-CON repository</name>
-            <url>http://dev.ehour.nl/nexus/content/repositories/releases</url>
+            <url>http://nexus.te-con.nl/content/repositories/releases</url>
         </repository>
         <snapshotRepository>
             <id>tecon-snapshots</id>
             <name>TE-CON snapshots repository</name>
-            <url>http://dev.ehour.nl/nexus/content/repositories/snapshots</url>
+            <url>http://nexus.te-con.nl/content/repositories/snapshots</url>
             <uniqueVersion>false</uniqueVersion>
         </snapshotRepository>
     </distributionManagement>
