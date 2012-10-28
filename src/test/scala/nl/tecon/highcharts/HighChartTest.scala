@@ -103,7 +103,7 @@ class HighChartTest extends FlatSpec with ShouldMatchers with BeforeAndAfter {
 
   "HighCharts" should " build chart with named datetime integer series" in {
     val now = new DateTime(2011, 2, 20, 13, 0, 0, 0)
-    val chart = highChart.copy(series = List(Series[DateNumericValue](data = List(DateNumericValue(now, 1), DateNumericValue(now.plusDays(1), 2)), name = "s1")))
+    val chart = highChart.copy(series = List(Series[DateFloatValue](data = List(DateFloatValue(now, 1), DateFloatValue(now.plusDays(1), 2)), name = "s1")))
 
     val serializedChart = chart.build("container")
 
@@ -131,42 +131,31 @@ class HighChartTest extends FlatSpec with ShouldMatchers with BeforeAndAfter {
   "HighCharts" should " treat gaps in sparse date series as zero" in {
     val now = new DateTime(2011, 2, 20, 13, 0, 0, 0)
     val chart = highChart.copy(xAxis = Seq(Axis(axisType = AxisType.Datetime)),
-      series = List(SparseDateSeries(data = List(DateNumericValue(now, 1), DateNumericValue(now.plusDays(2), 2), DateNumericValue(now.plusDays(5), 3)), name = "s1")))
+      series = List(SparseDateSeries(data = List(DateFloatValue(now, 1), DateFloatValue(now.plusDays(2), 2), DateFloatValue(now.plusDays(5), 3)), name = "s1")))
 
-    chart.build("container") should include("""series:[{"name":"s1","data":[1,0,2,0,0,3]""")
+    chart.build("container") should include("""series:[{"name":"s1","data":[1.0,0.0,2.0,0.0,0.0,3.0]""")
   }
 
   "HighCharts" should " treat gaps in sparse date series with an explicit start date as zero" in {
     val now = new DateTime(2011, 2, 20, 13, 0, 0, 0)
 
-    val data = List(DateNumericValue(now.plusDays(2), 1), DateNumericValue(now.plusDays(4), 2))
+    val data = List(DateFloatValue(now.plusDays(2), 1), DateFloatValue(now.plusDays(4), 2))
     val sparseSeries = SparseDateSeries(data = data, dateStart = now, name = "s1")
 
     val chart = highChart.copy(xAxis = Seq(Axis(axisType = AxisType.Datetime)), series = List(sparseSeries))
 
-    chart.build("container") should include("""series:[{"name":"s1","data":[0,0,1,0,2]""")
+    chart.build("container") should include("""series:[{"name":"s1","data":[0.0,0.0,1.0,0.0,2.0]""")
   }
 
   "HighCharts" should " treat gaps in sparse date series with an explicit start and end date as zero" in {
     val now = new DateTime(2011, 2, 20, 13, 0, 0, 0)
 
-    val data = List(DateNumericValue(now.plusDays(1), 1), DateNumericValue(now.plusDays(3), 2))
+    val data = List(DateFloatValue(now.plusDays(1), 1), DateFloatValue(now.plusDays(3), 2))
     val sparseSeries = SparseDateSeries(data = data, dateStart = now, dateEnd = now.plusDays(4), name = "s1")
 
     val chart = highChart.copy(xAxis = Seq(Axis(axisType = AxisType.Datetime)), series = List(sparseSeries))
 
-    chart.build("container") should include("""series:[{"name":"s1","data":[0,1,0,2,0]""")
-  }
-
-  "HighCharts" should " treat gaps in sparse date series with doubles" in {
-    val now = new DateTime(2011, 2, 20, 13, 0, 0, 0)
-
-    val data = List(DateNumericValue(now, 1.2), DateNumericValue(now.plusDays(2), 2.3))
-    val sparseSeries = SparseDateSeries(data = data, dateStart = now, name = "s1")
-
-    val chart = highChart.copy(xAxis = Seq(Axis(axisType = AxisType.Datetime)), series = List(sparseSeries))
-
-    chart.build("container") should include("""series:[{"name":"s1","data":[1.2,0,2.3]""")
+    chart.build("container") should include("""series:[{"name":"s1","data":[0.0,1.0,0.0,2.0,0.0]""")
   }
 
   "HighCharts" should " unquoted pointstart and interval set" in {

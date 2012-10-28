@@ -30,7 +30,7 @@ case class HighChart(chart: Option[Chart] = None,
       serialize("credits", credits),
       serialize("tooltip", tooltip))
 
-    val list = for (e <- filterDefined(serialized)) yield e.get
+    val list = filterDefined(serialized) map (_.get)
 
     val json = new StringBuilder()
 
