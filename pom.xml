@@ -210,12 +210,12 @@
 
     <distributionManagement>
         <repository>
-            <id>tecon-releases</id>
+            <id>releases</id>
             <name>TE-CON repository</name>
             <url>http://nexus.te-con.nl/content/repositories/releases</url>
         </repository>
         <snapshotRepository>
-            <id>tecon-snapshots</id>
+            <id>snapshots</id>
             <name>TE-CON snapshots repository</name>
             <url>http://nexus.te-con.nl/content/repositories/snapshots</url>
             <uniqueVersion>false</uniqueVersion>
