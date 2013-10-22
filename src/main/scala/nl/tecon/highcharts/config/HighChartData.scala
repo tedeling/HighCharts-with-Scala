@@ -3,6 +3,9 @@ package nl.tecon.highcharts.config
 import org.joda.time.DateTime
 import collection.Seq
 
+import scala.language.implicitConversions
+
+
 case class ValuePoint[V](givenValue: V)
 
 sealed class KeyValuePoint[K, V](val givenKey: K, val  givenValue: V)
@@ -44,7 +47,7 @@ case class SparseDateSeries(name: Option[String] = None,
       if (date isAfter endDate) {
         paddedSeries.reverse
       } else {
-        padSeriesData(date.plusDays(1), (dateMappedValues.getOrElse(date, 0f)) :: paddedSeries)
+        padSeriesData(date.plusDays(1), dateMappedValues.getOrElse(date, 0f) :: paddedSeries)
       }
     }
 

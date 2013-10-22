@@ -9,7 +9,9 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <scala.version>2.9.2</scala.version>
+        <scala.major.version>2.10</scala.major.version>
+        <scala.minor.version>0</scala.minor.version>
+        <scala.version>${scala.major.version}.${scala.minor.version}</scala.version>
     </properties>
 
     <dependencies>
@@ -27,20 +29,20 @@
 
         <dependency>
             <groupId>org.scalaj</groupId>
-            <artifactId>scalaj-collection_2.9.1</artifactId>
-            <version>1.2</version>
+            <artifactId>scalaj-collection_${scala.major.version}</artifactId>
+            <version>1.5</version>
         </dependency>
 
         <dependency>
             <groupId>net.liftweb</groupId>
-            <artifactId>lift-json-ext_2.9.1</artifactId>
-            <version>2.4</version>
+            <artifactId>lift-json-ext_${scala.major.version}</artifactId>
+            <version>2.5</version>
         </dependency>
 
         <dependency>
             <groupId>net.liftweb</groupId>
-            <artifactId>lift-json_2.9.1</artifactId>
-            <version>2.4</version>
+            <artifactId>lift-json_${scala.major.version}</artifactId>
+            <version>2.5</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.scala-lang</groupId>
@@ -52,14 +54,14 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.10</version>
+            <version>4.11</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.scalatest</groupId>
-            <artifactId>scalatest_2.9.2</artifactId>
-            <version>1.8</version>
+            <artifactId>scalatest_${scala.major.version}</artifactId>
+            <version>1.9.2</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

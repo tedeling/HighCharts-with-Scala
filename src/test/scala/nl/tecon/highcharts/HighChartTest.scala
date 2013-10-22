@@ -12,7 +12,7 @@ import org.joda.time.DateTime
 
 @RunWith(classOf[JUnitRunner])
 class HighChartTest extends FlatSpec with ShouldMatchers with BeforeAndAfter {
-  val chart = new Chart(defaultSeriesType = SeriesType.Column)
+  val chart = new Chart(defaultSeriesType = SeriesType.column)
   val title = new Title(text = "chart")
 
   val xAxis = new Axis(categories = Array("jan", "feb"))
@@ -34,7 +34,7 @@ class HighChartTest extends FlatSpec with ShouldMatchers with BeforeAndAfter {
   }
 
   "HighCharts" should " unquote multiple JavascriptFunctions properly" in {
-    val unquoted = highChart.unquoteJavascriptFunction(""" "${JSF}$first block${/JSF}$", "2", "${JSF}$second block${/JSF}$" """);
+    val unquoted = highChart.unquoteJavascriptFunction(""" "${JSF}$first block${/JSF}$", "2", "${JSF}$second block${/JSF}$" """)
 
     unquoted should equal(""" first block, "2", second block """)
   }
@@ -46,7 +46,7 @@ class HighChartTest extends FlatSpec with ShouldMatchers with BeforeAndAfter {
   }
 
   "HighCharts" should " build chart config with legend" in {
-    val legend = Legend(align = Alignment.Left, verticalAlign = VerticalAlignment.Top, y = 20, floating = true, borderWidth = 0)
+    val legend = Legend(align = Alignment.left, verticalAlign = VerticalAlignment.top, y = 20, floating = true, borderWidth = 0)
 
     val serializedChart = highChart.copy(legend = legend).build("container")
 
@@ -54,7 +54,7 @@ class HighChartTest extends FlatSpec with ShouldMatchers with BeforeAndAfter {
   }
 
   "HighCharts" should " build chart config with series plotOptions" in {
-    val plotOptions = PlotOptions(PlotOptionsSeries(marker = Marker(false)))
+    val plotOptions = PlotOptions(PlotOptionsSeries(marker = Marker(enabled = false)))
 
     val serializedChart = highChart.copy(plotOptions = plotOptions).build("container")
 
@@ -130,7 +130,7 @@ class HighChartTest extends FlatSpec with ShouldMatchers with BeforeAndAfter {
 
   "HighCharts" should " treat gaps in sparse date series as zero" in {
     val now = new DateTime(2011, 2, 20, 13, 0, 0, 0)
-    val chart = highChart.copy(xAxis = Seq(Axis(axisType = AxisType.Datetime)),
+    val chart = highChart.copy(xAxis = Seq(Axis(axisType = AxisType.datetime)),
       series = List(SparseDateSeries(data = List(DateFloatValue(now, 1), DateFloatValue(now.plusDays(2), 2), DateFloatValue(now.plusDays(5), 3)), name = "s1")))
 
     chart.build("container") should include("""series:[{"name":"s1","data":[1.0,0.0,2.0,0.0,0.0,3.0]""")
@@ -142,7 +142,7 @@ class HighChartTest extends FlatSpec with ShouldMatchers with BeforeAndAfter {
     val data = List(DateFloatValue(now.plusDays(2), 1), DateFloatValue(now.plusDays(4), 2))
     val sparseSeries = SparseDateSeries(data = data, dateStart = now, name = "s1")
 
-    val chart = highChart.copy(xAxis = Seq(Axis(axisType = AxisType.Datetime)), series = List(sparseSeries))
+    val chart = highChart.copy(xAxis = Seq(Axis(axisType = AxisType.datetime)), series = List(sparseSeries))
 
     chart.build("container") should include("""series:[{"name":"s1","data":[0.0,0.0,1.0,0.0,2.0]""")
   }
@@ -153,7 +153,7 @@ class HighChartTest extends FlatSpec with ShouldMatchers with BeforeAndAfter {
     val data = List(DateFloatValue(now.plusDays(1), 1), DateFloatValue(now.plusDays(3), 2))
     val sparseSeries = SparseDateSeries(data = data, dateStart = now, dateEnd = now.plusDays(4), name = "s1")
 
-    val chart = highChart.copy(xAxis = Seq(Axis(axisType = AxisType.Datetime)), series = List(sparseSeries))
+    val chart = highChart.copy(xAxis = Seq(Axis(axisType = AxisType.datetime)), series = List(sparseSeries))
 
     chart.build("container") should include("""series:[{"name":"s1","data":[0.0,1.0,0.0,2.0,0.0]""")
   }

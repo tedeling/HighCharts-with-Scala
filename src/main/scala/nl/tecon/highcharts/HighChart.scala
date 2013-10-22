@@ -47,7 +47,7 @@ case class HighChart(chart: Option[Chart] = None,
       case _ =>
     }
 
-    json append (serializeSeries(series))
+    json append serializeSeries(series)
 
     postProcess(json.toString())
   }

@@ -13,7 +13,7 @@ class LegendTest extends FlatSpec with ShouldMatchers {
 
   "Legend" should "be serialized" in {
     import Conversions.valueToOption
-    val legend = new Legend(align = Alignment.Center)
+    val legend = new Legend(align = Alignment.center)
 
     implicit val formats = net.liftweb.json.DefaultFormats + new EnumNameSerializer(Alignment)
     val jsonLegend = write(legend)

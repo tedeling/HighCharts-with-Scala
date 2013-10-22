@@ -3,34 +3,34 @@ package nl.tecon.highcharts.config
 import org.joda.time.DateTime
 
 
-object Alignment extends Enumeration("left", "center", "right") {
+object Alignment extends Enumeration {
   type Type = Value
-  val Left, Center, Right = Value
+  val left, center, right = Value
 }
 
-object VerticalAlignment extends Enumeration("top", "middle", "bottom") {
+object VerticalAlignment extends Enumeration {
   type Type = Value
-  val Top, Middle, Bottom = Value
+  val top, middle, bottom = Value
 }
 
-object Layout extends Enumeration("horizontal", "vertical") {
+object Layout extends Enumeration {
   type Type = Value
-  val Horizontal, Vertical = Value
+  val horizontal, vertical = Value
 }
 
-object AxisType extends Enumeration("linear", "datetime") {
+object AxisType extends Enumeration {
   type Type = Value
-  val Linear, Datetime = Value
+  val linear, datetime = Value
 }
 
-object SeriesType extends Enumeration("column", "line", "spline", "area", "bar") {
+object SeriesType extends Enumeration {
   type Type = Value
-  val Column, Line, Spline, Area, Bar = Value
+  val column, line, spline, area, bar = Value
 }
 
-object ZoomType extends Enumeration("x", "y", "xy") {
+object ZoomType extends Enumeration {
   type Type = Value
-  val X, Y, XY = Value
+  val x, y, xy = Value
 }
 
 case class Labels(rotation: Option[Int] = None,
