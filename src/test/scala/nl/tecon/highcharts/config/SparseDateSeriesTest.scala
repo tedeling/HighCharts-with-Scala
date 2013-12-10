@@ -1,16 +1,15 @@
 package nl.tecon.highcharts.config
 
 
-import org.scalatest.matchers.ShouldMatchers
 import scala.Predef._
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-import org.scalatest.FlatSpec
+import org.scalatest.{Matchers, FlatSpec}
 import org.joda.time.DateTime
 
 
 @RunWith(classOf[JUnitRunner])
-class SparseDateSeriesTest extends FlatSpec with ShouldMatchers {
+class SparseDateSeriesTest extends FlatSpec with Matchers {
   val now = new DateTime(2012, 10, 27, 14, 17, 0, 0)
 
   behavior of "SparseDataSeries"
