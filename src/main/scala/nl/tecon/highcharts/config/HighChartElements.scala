@@ -75,6 +75,8 @@ case class Credits(enabled: Boolean = false)
 
 object PointInterval {
   val DAY = 24 * 3600 * 1000
+  val WEEK = 7 * DAY
+  val YEAR = 365 * DAY
 }
 
 case class PlotOptions(series: Option[PlotOptionsSeries] = None,
