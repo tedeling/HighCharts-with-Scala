@@ -4,7 +4,7 @@
     <groupId>nl.tecon.scalahighcharts</groupId>
     <artifactId>highcharts</artifactId>
     <packaging>jar</packaging>
-    <version>1.5-SNAPSHOT</version>
+    <version>1.6-SNAPSHOT</version>
     <name>Scala HighCharts</name>
 
     <properties>
