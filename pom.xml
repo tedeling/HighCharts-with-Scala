@@ -4,13 +4,13 @@
     <groupId>nl.tecon.scalahighcharts</groupId>
     <artifactId>highcharts</artifactId>
     <packaging>jar</packaging>
-    <version>1.6-SNAPSHOT</version>
+    <version>1.6</version>
     <name>Scala HighCharts</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <scala.major.version>2.10</scala.major.version>
-        <scala.minor.version>4</scala.minor.version>
+        <scala.major.version>2.11</scala.major.version>
+        <scala.minor.version>3</scala.minor.version>
         <scala.version>${scala.major.version}.${scala.minor.version}</scala.version>
     </properties>
 
@@ -31,6 +31,16 @@
             <groupId>net.liftweb</groupId>
             <artifactId>lift-json-ext_${scala.major.version}</artifactId>
             <version>2.6-RC1</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.scala-lang</groupId>
+                    <artifactId>scala-compiler</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.scala-lang</groupId>
+                    <artifactId>scala-library</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -41,6 +51,10 @@
                 <exclusion>
                     <groupId>org.scala-lang</groupId>
                     <artifactId>scala-compiler</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.scala-lang</groupId>
+                    <artifactId>scala-library</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
