@@ -9,7 +9,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <scala.major.version>2.10</scala.major.version>
+        <scala.major.version>2.11</scala.major.version>
         <scala.minor.version>4</scala.minor.version>
         <scala.version>${scala.major.version}.${scala.minor.version}</scala.version>
     </properties>
@@ -36,7 +36,7 @@
         <dependency>
             <groupId>net.liftweb</groupId>
             <artifactId>lift-json_${scala.major.version}</artifactId>
-            <version>2.6-RC1</version>
+            <version>2.6-RC2</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.scala-lang</groupId>
