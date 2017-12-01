@@ -21,3 +21,6 @@ project/plugins/project/
 highcharts.iml
 cache
 atlassian-ide-plugin.xml
+
+.ide/*
+.ide
